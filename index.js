@@ -14,7 +14,7 @@ class Prestamista {
 }
 
 function mostrar_cuotas(obj){
-    let cuotas = prompt("Las cuotas disponibles de " + obj.nombre + " son: \n" + "1.  " + obj.cuota1 + "  Cuotas con interes"+ "\n" + "2.  " + obj.cuota2 + "  Cuotas con interes" + "\n" + "3.  " + obj.cuota3 + "  Cuotas con interes")
+    let cuotas = prompt(`Las cuotas disponibles de ${obj.nombre} son: \n 1. ${obj.cuota1} Cuotas con interes \n 2. ${obj.cuota2} Cuotas con interes \n 3. ${obj.cuota3} Cuotas con interes`)
     return cuotas
 }
 
@@ -40,7 +40,7 @@ let eligio_monto = false
 let monto_deseado
 
 while(eligio_prestamista===false){
-    var eleccion_de_prestamista = parseInt(prompt("Bienvenido al Simulador de un prestamo, a continuación le pido que ingrese que tarjeta de credito usted posee: \n 1. Visa \n 2. Mastercard \n 3. Cabal \n 4. Naranja \n 5. Galicia"))
+    var eleccion_de_prestamista = parseInt(prompt(`Bienvenido al Simulador de un prestamo, a continuación le pido que ingrese que tarjeta de credito usted posee: \n 1. Visa \n 2. Mastercard \n 3. Cabal \n 4. Naranja \n 5. Galicia`))
     if(eleccion_de_prestamista <= 5 && eleccion_de_prestamista > 0){
         prestamista_deseado = prestamistas[eleccion_de_prestamista-1]
         eligio_prestamista = true;
@@ -49,7 +49,7 @@ while(eligio_prestamista===false){
 
 while(eligio_monto === false){
     var eleccion_de_monto = parseInt(prompt("Ingrese el Monto deseado"));
-    var aceptar_monto = parseInt(prompt("El monto ingresado es " + eleccion_de_monto + "\n" + "¿Esta seguro? " + "\n" + "1. Si" + "\n" + "2. No"))
+    var aceptar_monto = parseInt(prompt(`El monto ingresado es ${eleccion_de_monto} \n ¿Esta seguro? \n 1. Si \n 2. No`))
     if (aceptar_monto == 1){
         monto_deseado = eleccion_de_monto
         eligio_monto = true;
@@ -60,7 +60,7 @@ while(eligio_cuotas === false){
     var eleccion_de_cuotas = mostrar_cuotas(prestamista_deseado);
     if (eleccion_de_cuotas <= 3 && eleccion_de_cuotas > 0){
         cuotas_deseadas = prestamista_deseado.lista_de_cuotas[eleccion_de_cuotas-1]
-        var aceptar_cuota = parseInt(prompt("El valor de la cuota seria " + calcular_cuota(monto_deseado, prestamista_deseado.lista_de_tasas[eleccion_de_cuotas-1], cuotas_deseadas) + "\n" + "¿Estas Seguro?" + "\n" + "1. Si" + "\n" + "2. No"))
+        var aceptar_cuota = parseInt(prompt(`El valor de la cuota seria ${calcular_cuota(monto_deseado, prestamista_deseado.lista_de_tasas[eleccion_de_cuotas-1], cuotas_deseadas)} \n ¿Estas Seguro? \n 1. Si \n 2. No`))
         if (aceptar_cuota == 1){
             alert("¡Gracias por usar el simulador!")
             eligio_cuotas = true
