@@ -61,15 +61,22 @@ while (eligio_prestamista === false) {
 
 while (eligio_monto === false) {
     let eleccion_de_monto = parseInt(prompt("💵 Ingrese el Monto deseado"));
-    let aceptar_monto = parseInt(prompt(`💵 El monto ingresado es ${eleccion_de_monto} \n ¿Esta seguro? \n 1. Si ✅ \n 2. No ❌`))
-    switch(aceptar_monto) {
-        case(1):
-            monto_deseado = eleccion_de_monto
-            eligio_monto = true;
-            break;
-        default:
-                alert("A continuación podra elegir el monto nuevamente")
+    
+    if(isNaN(eleccion_de_monto)){
+        alert("Introduzca una cifra numerica")
     }
+    else{
+        let aceptar_monto = parseInt(prompt(`💵 El monto ingresado es ${eleccion_de_monto} \n ¿Esta seguro? \n 1. Si ✅ \n 2. No ❌`))
+        switch(aceptar_monto) {
+            case(1):
+                monto_deseado = eleccion_de_monto
+                eligio_monto = true;
+                break;
+            default:
+                    alert("A continuación podra elegir el monto nuevamente")
+        }
+    }
+    
 }
 
 while (eligio_cuotas === false) {
