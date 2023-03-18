@@ -66,7 +66,9 @@ while (eligio_monto === false) {
         case(1):
             monto_deseado = eleccion_de_monto
             eligio_monto = true;
-            break
+            break;
+        default:
+                alert("A continuación podra elegir el monto nuevamente")
     }
 }
 
@@ -80,6 +82,9 @@ while (eligio_cuotas === false) {
             case(1):
                 alert("🙏 ¡Gracias por usar el simulador! 🙏")
                 eligio_cuotas = true
+                break
+            default:
+                alert("A continuación podra elegir las cuotas nuevamente")
         }
     }
 }
