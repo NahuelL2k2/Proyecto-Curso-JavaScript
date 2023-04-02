@@ -1,0 +1,32 @@
+*{
+    border: 0;
+    padding: 0;
+}
+
+ul{
+    list-style: none;;
+}
+
+body{
+    overflow-y: hidden;
+}
+
+main div{
+    height: 500px;
+}
+
+.selector{
+    height: 50px !important;
+    font-size: 2rem;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+
+#boton-empezar{
+    height: 50px !important;
+    font-size: 1em;
+}
+
+#contenedor-secundario {
+    height: auto;
+}
