@@ -1,18 +1,21 @@
 *{
     border: 0;
     padding: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 ul{
     list-style: none;;
 }
 
-body{
-    overflow-y: hidden;
+html, body{
+    height: 100%;
+    background: rgb(22,147,165);
+    background: linear-gradient(150deg, rgba(22,147,165,1) 0%, rgba(199,237,232,1) 100%) !important;
 }
 
-main div{
-    height: 500px;
+body{
+    padding-top: 40px;
 }
 
 .selector{
@@ -25,8 +28,57 @@ main div{
 #boton-empezar{
     height: 50px !important;
     font-size: 1em;
+    background-color: #7ececa;
+    color: white !important;
 }
 
-#contenedor-secundario {
-    height: auto;
+.contenedor-generico{
+    background: rgb(22,147,165);
+    background: linear-gradient(150deg, rgba(22,147,165,1) 50%, rgba(199,237,232,1) 100%);
+    box-shadow: 10px 10px 38px 2px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 10px 10px 38px 2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 38px 2px rgba(0,0,0,0.75);
 }
+
+#contenedor-principal{
+    padding-bottom: 100px;
+}
+
+#contenedor-secundario{
+    padding: 50px !important;
+}
+
+
+/* -------------------- MEDIA QUERYS ----------------------------------  */
+
+@media (max-width: 1024px) {
+    #contenedor-principal{
+        width: 80% !important;
+    }
+
+    #contenedor-secundario{
+        width: 40% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    #contenedor-principal{
+        width: 85% !important;
+    }
+
+    #contenedor-secundario{
+        width: 70% !important;
+    }
+
+    #contenedor-secundario ul {
+        margin-right: 30px !important;
+    }
+}
+
+@media (max-width: 440px) {
+    #boton-empezar{
+        padding-bottom: 55px;
+    }
+
+}
+

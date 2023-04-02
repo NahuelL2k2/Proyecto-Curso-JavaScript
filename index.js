@@ -5,12 +5,9 @@ let titulo = document.getElementById("titulo")
 let parrafo = document.getElementById("parrafo")
 const contenedorSecundario = document.getElementById("contenedor-secundario")
 
-
-
 // Clases
-
-class Prestamo{
-    constructor(prestamista,monto,meses,tasa,cuota){
+class Prestamo {
+    constructor(prestamista, monto, meses, tasa, cuota) {
         this.prestamista = prestamista
         this.monto = monto
         this.meses = meses
@@ -55,7 +52,7 @@ for (var i = 0; i < prestamistas.length; i++) {
 
 let selectorDeTarjeta = document.createElement("select")
 
-for (var i = 0; i < opciones.length; i++){
+for (var i = 0; i < opciones.length; i++) {
     var opcion = document.createElement("option")
     opcion.value = opciones[i]
     opcion.text = opciones[i]
@@ -66,16 +63,16 @@ let lista_de_cuotas = []
 
 // Funciones 
 
-function DeleteFade(elemento){
-    elemento.classList.remove("animate__animated","animate__fadeInUp")
+function DeleteFade(elemento) {
+    elemento.classList.remove("animate__animated", "animate__fadeInUp")
 }
 
-function Fade(elemento){
-    elemento.classList.add("animate__animated","animate__fadeInUp")
+function Fade(elemento) {
+    elemento.classList.add("animate__animated", "animate__fadeInUp")
     // setTimeout(DeleteFade(elemento),5000)
 }
 
-function crear_lista_de_cuotas(obj){
+function crear_lista_de_cuotas(obj) {
     lista_de_cuotas.push(obj.cuota1)
     lista_de_cuotas.push(obj.cuota2)
     lista_de_cuotas.push(obj.cuota3)
@@ -104,11 +101,11 @@ let meses
 
 //Agregado de Id's y clases
 
-selectorDeTarjeta.classList.add("selector","text-center","rounded", "w-50")
+selectorDeTarjeta.classList.add("selector", "text-center", "rounded", "w-50", "mt-5")
 
-selectorDeCuotas.classList.add("selector","text-center","rounded", "w-50")
+selectorDeCuotas.classList.add("selector", "text-center", "rounded", "w-50", "mt-5")
 
-selectorDeMonto.classList.add("selector","text-center","rounded", "w-50")
+selectorDeMonto.classList.add("selector", "text-center", "rounded", "w-50", "mt-5")
 
 BotonPrincipal.classList.add("w-50")
 
@@ -118,7 +115,8 @@ BotonPrincipal.classList.add("w-50")
 titulo.addEventListener('animationend', () => {
     DeleteFade(titulo)
     DeleteFade(BotonPrincipal)
-  });
+});
+
 
 
 BotonPrincipal.onclick = () => {
@@ -127,18 +125,18 @@ BotonPrincipal.onclick = () => {
     Fade(selectorDeTarjeta)
     Fade(selectorDeCuotas)
     Fade(selectorDeMonto)
-    if (contador === 0){ 
+    if (contador === 0) {
         titulo.innerHTML = "A continuación elija que tarjeta usted posee"
-        parrafo.replaceWith(selectorDeTarjeta) 
+        parrafo.replaceWith(selectorDeTarjeta)
         BotonPrincipal.innerHTML = "Siguiente"
         contador = contador + 1
     }
-    else if(contador == 1){
-        eleccion_tarjeta = prestamistas.find(p=> p.nombre == selectorDeTarjeta.options[selectorDeTarjeta.selectedIndex].value)
+    else if (contador == 1) {
+        eleccion_tarjeta = prestamistas.find(p => p.nombre == selectorDeTarjeta.options[selectorDeTarjeta.selectedIndex].value)
         localStorage.setItem("prestamista", eleccion_tarjeta.nombre)
         titulo.innerHTML = `La tarjeta elejida es ${eleccion_tarjeta.nombre}, las cuotas disponibles son:`
         crear_lista_de_cuotas(eleccion_tarjeta)
-        for (var i = 0; i < lista_de_cuotas.length; i++){
+        for (var i = 0; i < lista_de_cuotas.length; i++) {
             var opcion = document.createElement("option");
             opcion.value = i;
             opcion.text = lista_de_cuotas[i];
@@ -148,7 +146,7 @@ BotonPrincipal.onclick = () => {
         BotonPrincipal.innerHTML = "Siguiente"
         contador = contador + 1
     }
-    else if (contador == 2){
+    else if (contador == 2) {
         Fade(BotonPrincipal)
         eleccion_cuotas = selectorDeCuotas.options[selectorDeCuotas.selectedIndex].text
         titulo.innerHTML = `Las cuotas elegidas fueron ${eleccion_cuotas}, Ingrese el monto que sea obtener`
@@ -156,22 +154,22 @@ BotonPrincipal.onclick = () => {
         BotonPrincipal.innerHTML = "Siguiente"
         contador = contador + 1
     }
-    else if (contador == 3){
+    else if (contador == 3) {
         eleccion_de_monto = parseInt(selectorDeMonto.value)
         localStorage.setItem("prestamo", eleccion_de_monto)
-        if (isNaN(eleccion_de_monto)){
+        if (isNaN(eleccion_de_monto)) {
             alert("Introduzca un numero correcto")
         }
-        else{
+        else {
             BotonPrincipal.remove()
             selectorDeMonto.remove()
             tasa = eleccion_tarjeta.lista_de_tasas[parseInt(selectorDeCuotas.options[selectorDeCuotas.selectedIndex].value)]
             localStorage.setItem("tasa", tasa)
             meses = parseInt(parseInt(eleccion_cuotas))
-            localStorage.setItem("meses",meses)
+            localStorage.setItem("meses", meses)
             cuota = (calcular_cuota(eleccion_de_monto, tasa, meses)).toFixed(2)
             localStorage.setItem("cuota", cuota)
-            titulo.innerHTML = `El valor de la cuota sería $${cuota}`   
+            titulo.innerHTML = `El valor de la cuota sería $${cuota}`
         }
     }
 }
@@ -179,7 +177,7 @@ BotonPrincipal.onclick = () => {
 
 // Uso de LocalStorage y JSON
 
-if (localStorage.length > 0){
+if (localStorage.length > 0) {
 
     contenedorSecundario.classList.remove("invisible")
 
@@ -196,7 +194,7 @@ if (localStorage.length > 0){
     let meses_anterior = document.getElementById("meses")
     let tasa_anterior = document.getElementById("tasa")
     let cuota_anterior = document.getElementById("cuota")
-    
+
     prestamista_anterior.innerHTML = `Tarjeta: ${ultima_simulacion.prestamista}`
     monto_anterior.innerHTML = `Monto: $${ultima_simulacion.monto}`
     meses_anterior.innerHTML = `Meses: ${ultima_simulacion.meses}`
