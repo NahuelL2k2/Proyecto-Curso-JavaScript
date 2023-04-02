@@ -90,12 +90,11 @@ function calcular_cuota(monto, tasa, meses) {
 // Declaro variables para despues usar
 
 
-
 let selectorDeCuotas = document.createElement("select")
 
 let selectorDeMonto = document.createElement("input")
 
-let cambiador = 0
+let contador = 0
 let eleccion_tarjeta
 let eleccion_cuotas
 let eleccion_de_monto
@@ -114,7 +113,7 @@ selectorDeMonto.classList.add("selector","text-center","rounded", "w-50")
 BotonPrincipal.classList.add("w-50")
 
 
-//Evento Principal
+//Eventos Principales
 
 titulo.addEventListener('animationend', () => {
     DeleteFade(titulo)
@@ -128,13 +127,13 @@ BotonPrincipal.onclick = () => {
     Fade(selectorDeTarjeta)
     Fade(selectorDeCuotas)
     Fade(selectorDeMonto)
-    if (cambiador === 0){ 
+    if (contador === 0){ 
         titulo.innerHTML = "A continuación elija que tarjeta usted posee"
         parrafo.replaceWith(selectorDeTarjeta) 
         BotonPrincipal.innerHTML = "Siguiente"
-        cambiador = cambiador + 1
+        contador = contador + 1
     }
-    else if(cambiador == 1){
+    else if(contador == 1){
         eleccion_tarjeta = prestamistas.find(p=> p.nombre == selectorDeTarjeta.options[selectorDeTarjeta.selectedIndex].value)
         localStorage.setItem("prestamista", eleccion_tarjeta.nombre)
         titulo.innerHTML = `La tarjeta elejida es ${eleccion_tarjeta.nombre}, las cuotas disponibles son:`
@@ -147,17 +146,17 @@ BotonPrincipal.onclick = () => {
         }
         selectorDeTarjeta.replaceWith(selectorDeCuotas)
         BotonPrincipal.innerHTML = "Siguiente"
-        cambiador = cambiador + 1
+        contador = contador + 1
     }
-    else if (cambiador == 2){
+    else if (contador == 2){
         Fade(BotonPrincipal)
         eleccion_cuotas = selectorDeCuotas.options[selectorDeCuotas.selectedIndex].text
         titulo.innerHTML = `Las cuotas elegidas fueron ${eleccion_cuotas}, Ingrese el monto que sea obtener`
         selectorDeCuotas.replaceWith(selectorDeMonto)
         BotonPrincipal.innerHTML = "Siguiente"
-        cambiador = cambiador + 1
+        contador = contador + 1
     }
-    else if (cambiador == 3){
+    else if (contador == 3){
         eleccion_de_monto = parseInt(selectorDeMonto.value)
         localStorage.setItem("prestamo", eleccion_de_monto)
         if (isNaN(eleccion_de_monto)){
@@ -177,6 +176,8 @@ BotonPrincipal.onclick = () => {
     }
 }
 
+
+// Uso de LocalStorage y JSON
 
 if (localStorage.length > 0){
 
