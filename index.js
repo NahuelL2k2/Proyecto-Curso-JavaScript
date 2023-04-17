@@ -3,7 +3,33 @@
 let BotonPrincipal = document.querySelector("#boton-empezar")
 let titulo = document.getElementById("titulo")
 let parrafo = document.getElementById("parrafo")
+const contenedorPrincipal = document.getElementById("contenedor-principal")
 const contenedorSecundario = document.getElementById("contenedor-secundario")
+const contenedorCotizaciones = document.getElementById("contenedor-cotizaciones")
+const listaCotizaciones = document.getElementById("lista-cotizaciones")
+
+//Asincronia
+
+const dolarSiAPI = "https://www.dolarsi.com/api/api.php?type=valoresprincipales"
+fetch(`${dolarSiAPI}`)
+.then(resp => resp.json())
+.then(res => {
+    console.log(res)
+    const cotizacionOficial = res[0].casa
+    const cotizacionBlue = res[1].casa
+    const cotizaciones = [cotizacionOficial, cotizacionBlue]
+    cotizaciones.forEach((cot) => {
+        const li = document.createElement("li")
+        li.innerHTML = `<h2 class="fs-3"> ${cot.nombre}</h2>
+                        <p class="fs-5">Compra: ${cot.compra} </p>
+                        <p class="fs-5">Venta: ${cot.venta} </p>`
+        listaCotizaciones.append(li)
+    contenedorCotizaciones.classList.remove("invisible")
+    })
+
+})
+.catch(err => console.log(err))
+
 
 // Clases
 class Prestamo {
@@ -163,13 +189,19 @@ BotonPrincipal.onclick = () => {
         else {
             BotonPrincipal.remove()
             selectorDeMonto.remove()
+            contenedorPrincipal.remove()
             tasa = eleccion_tarjeta.lista_de_tasas[parseInt(selectorDeCuotas.options[selectorDeCuotas.selectedIndex].value)]
             localStorage.setItem("tasa", tasa)
             meses = parseInt(parseInt(eleccion_cuotas))
             localStorage.setItem("meses", meses)
             cuota = (calcular_cuota(eleccion_de_monto, tasa, meses)).toFixed(2)
             localStorage.setItem("cuota", cuota)
-            titulo.innerHTML = `El valor de la cuota sería $${cuota}`
+            Swal.fire({
+                title: `¡Gracias por usar el simulador!`,
+                text: `El valor de la cuota seria $${cuota}`,
+                icon: `success`,
+                confirmButtonText: `Terminar simulacion`
+            })
         }
     }
 }

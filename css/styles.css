@@ -1,3 +1,12 @@
+/* 
+    color1: #1693a5
+    color2: #45b5c4
+    color3: #7ececa
+    color4: #a0ded6
+    color5: #c7ede8
+*/
+
+
 *{
     border: 0;
     padding: 0;
@@ -12,7 +21,9 @@ html, body{
     height: 100%;
     background: rgb(22,147,165);
     background: linear-gradient(150deg, rgba(22,147,165,1) 0%, rgba(199,237,232,1) 100%) !important;
+    height: 1220px;
 }
+
 
 body{
     padding-top: 40px;
@@ -48,6 +59,11 @@ body{
     padding: 50px !important;
 }
 
+/* #contenedor-cotizaciones{
+    pass
+} */
+
+
 
 /* -------------------- MEDIA QUERYS ----------------------------------  */
 
@@ -73,12 +89,18 @@ body{
     #contenedor-secundario ul {
         margin-right: 30px !important;
     }
+
+    #contenedor-cotizaciones {
+        width: 80% !important;
+    }
 }
 
 @media (max-width: 440px) {
     #boton-empezar{
         padding-bottom: 55px;
     }
-
+    #contenedor-cotizaciones {
+        width: 95% !important;
+    }
 }
 

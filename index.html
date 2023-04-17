@@ -22,7 +22,12 @@
                 Mastercard, Cabal, Naranja, Galicia</p>
             <button id="boton-empezar" type="button" class="mt-4 btn animate__animated animate__fadeInUp">¡Comenzar Simulación!</button>
         </div>
-        <div id="contenedor-secundario" class="contenedor-generico invisible mt-5 container w-25  rounded-pill text-center text-light">
+        <div id="contenedor-cotizaciones" class="mt-4 contenedor-generico container w-50 rounded text-center text-light animate__animated animate__flipInX invisible">
+            <ul id="lista-cotizaciones" class="d-flex justify-content-around">
+
+            </ul>
+        </div>
+        <div id="contenedor-secundario" class="contenedor-generico invisible mt-5 container w-25  rounded-pill text-center text-light animate__animated animate__fadeInUp">
             <h1 class="display-6">¡Tu ultima Simulación!</h1>
             <ul id="lista-ultima-simulacion">
                 <li id="prestamista"></li>
@@ -35,6 +40,7 @@
     </main>
     <script src="./index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
