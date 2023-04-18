@@ -1,4 +1,4 @@
-# Proyecto Curso JavaScript Coderhouse
+# Proyecto Curso JavaScript
 ## Simulador de prestamos
 Simulador simple de prestamos con varios bancos de Argentina con tasas inventadas.
 
