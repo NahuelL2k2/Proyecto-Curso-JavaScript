@@ -11,6 +11,7 @@
     border: 0;
     padding: 0;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    box-sizing: border-box;
 }
 
 ul{
@@ -27,6 +28,10 @@ html, body{
 
 body{
     padding-top: 40px;
+}
+
+.verde{
+    color: #079a7d;
 }
 
 .selector{
@@ -51,17 +56,49 @@ body{
     -moz-box-shadow: 10px 10px 38px 2px rgba(0,0,0,0.75);
 }
 
+
+#contenedor-cotizaciones ul li {
+    background-color: white;
+    padding: 15px;
+    border-radius: 20px;
+    border-top: 3px solid #1693a5;
+    border-bottom: 3px solid #1693a5;
+}
+
 #contenedor-principal{
     padding-bottom: 100px;
 }
 
 #contenedor-secundario{
     padding: 50px !important;
+    position: relative;
 }
 
-/* #contenedor-cotizaciones{
-    pass
-} */
+#siguiente{
+    font-size: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 50px;
+    position: absolute;
+    right: 0;
+    top: 40%;
+    color: #1693a5;
+}
+
+#atras{
+    font-size: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 50px;
+    position: absolute;
+    left: 0;
+    top: 40%;
+    color: #1693a5;
+}
 
 
 
@@ -100,7 +137,21 @@ body{
         padding-bottom: 55px;
     }
     #contenedor-cotizaciones {
-        width: 95% !important;
+        width: 100% !important;
+    }
+
+    #contenedor-cotizaciones ul{
+        margin-right: 20px;
+    }
+    #contenedor-cotizaciones ul li{
+        padding: 5px;
+    }
+    #contenedor-cotizaciones ul li h2{
+        font-size: 20px !important;
+    }
+
+    #contenedor-cotizaciones ul li p {
+        font-size: 15px !important;
     }
 }
 

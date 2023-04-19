@@ -7,33 +7,13 @@ const contenedorPrincipal = document.getElementById("contenedor-principal")
 const contenedorSecundario = document.getElementById("contenedor-secundario")
 const contenedorCotizaciones = document.getElementById("contenedor-cotizaciones")
 const listaCotizaciones = document.getElementById("lista-cotizaciones")
-
-//Asincronia
-
-const dolarSiAPI = "https://www.dolarsi.com/api/api.php?type=valoresprincipales"
-fetch(`${dolarSiAPI}`)
-.then(resp => resp.json())
-.then(res => {
-    console.log(res)
-    const cotizacionOficial = res[0].casa
-    const cotizacionBlue = res[1].casa
-    const cotizaciones = [cotizacionOficial, cotizacionBlue]
-    cotizaciones.forEach((cot) => {
-        const li = document.createElement("li")
-        li.innerHTML = `<h2 class="fs-3"> ${cot.nombre}</h2>
-                        <p class="fs-5">Compra: ${cot.compra} </p>
-                        <p class="fs-5">Venta: ${cot.venta} </p>`
-        listaCotizaciones.append(li)
-    contenedorCotizaciones.classList.remove("invisible")
-    })
-
-})
-.catch(err => console.log(err))
-
+const botonAtras = document.getElementById("atras")
+const botonSiguiente = document.getElementById("siguiente")
 
 // Clases
 class Prestamo {
-    constructor(prestamista, monto, meses, tasa, cuota) {
+    constructor(prestamista, monto, meses, tasa, cuota, id) {
+        this.id = id
         this.prestamista = prestamista
         this.monto = monto
         this.meses = meses
@@ -87,6 +67,10 @@ for (var i = 0; i < opciones.length; i++) {
 
 let lista_de_cuotas = []
 
+
+
+
+
 // Funciones 
 
 function DeleteFade(elemento) {
@@ -95,6 +79,15 @@ function DeleteFade(elemento) {
 
 function Fade(elemento) {
     elemento.classList.add("animate__animated", "animate__fadeInUp")
+    // setTimeout(DeleteFade(elemento),5000)
+}
+
+function DeleteFlip(elemento) {
+    elemento.classList.remove("animate__animated", "animate__flipInY")
+}
+
+function Flip(elemento) {
+    elemento.classList.add("animate__animated", "animate__flipInY")
     // setTimeout(DeleteFade(elemento),5000)
 }
 
@@ -124,6 +117,14 @@ let eleccion_de_monto
 let cuota
 let tasa
 let meses
+let prestamoAnterior = new Prestamo
+let indiceDeListaDeSimulaciones = 0
+let simulaciones_anteriores = JSON.parse(localStorage.getItem("ListaDePrestamos"))
+let prestamista_anterior = document.getElementById("prestamista")
+let monto_anterior = document.getElementById("monto")
+let meses_anterior = document.getElementById("meses")
+let tasa_anterior = document.getElementById("tasa")
+let cuota_anterior = document.getElementById("cuota")
 
 //Agregado de Id's y clases
 
@@ -135,6 +136,43 @@ selectorDeMonto.classList.add("selector", "text-center", "rounded", "w-50", "mt-
 
 BotonPrincipal.classList.add("w-50")
 
+//Asincronia
+
+const dolarSiAPI = "https://www.dolarsi.com/api/api.php?type=valoresprincipales"
+fetch(`${dolarSiAPI}`)
+    .then(resp => resp.json())
+    .then(res => {
+        const cotizacionOficial = res[0].casa
+        const cotizacionBlue = res[1].casa
+        const cotizacionCCL = res[3].casa
+        const cotizaciones = [cotizacionOficial, cotizacionBlue, cotizacionCCL]
+        cotizaciones.forEach((cot) => {
+            const li = document.createElement("li")
+            li.innerHTML = `<h2 class="fs-3 text-muted"> ${(cot.nombre).toUpperCase()}</h2>
+                        <p class="fs-5 text-muted">Compra: <span class="verde">$${cot.compra} </span></p>
+                        <p class="fs-5 text-muted">Venta: <span class="verde">$${cot.venta} </span></p>`
+            listaCotizaciones.append(li)
+            contenedorCotizaciones.classList.add("animate__flipInX")
+            contenedorCotizaciones.classList.remove("invisible")
+        })
+
+    })
+    .catch(err => console.log(err))
+
+// Uso de LocalStorage y JSON
+
+
+if (localStorage.length > 0) {
+
+    contenedorSecundario.classList.remove("invisible")
+
+    prestamista_anterior.innerHTML = `Tarjeta: ${simulaciones_anteriores[0].prestamista}`
+    monto_anterior.innerHTML = `Monto: $${simulaciones_anteriores[0].monto}`
+    meses_anterior.innerHTML = `Meses: ${simulaciones_anteriores[0].meses}`
+    tasa_anterior.innerHTML = `Tasa: ${simulaciones_anteriores[0].tasa}%`
+    cuota_anterior.innerHTML = `Cuota: $${simulaciones_anteriores[0].cuota}`
+}
+
 
 //Eventos Principales
 
@@ -143,7 +181,9 @@ titulo.addEventListener('animationend', () => {
     DeleteFade(BotonPrincipal)
 });
 
-
+contenedorSecundario.addEventListener("animationend", () => {
+    DeleteFlip(contenedorSecundario)
+})
 
 BotonPrincipal.onclick = () => {
     Fade(titulo)
@@ -159,7 +199,7 @@ BotonPrincipal.onclick = () => {
     }
     else if (contador == 1) {
         eleccion_tarjeta = prestamistas.find(p => p.nombre == selectorDeTarjeta.options[selectorDeTarjeta.selectedIndex].value)
-        localStorage.setItem("prestamista", eleccion_tarjeta.nombre)
+        prestamoAnterior.prestamista = eleccion_tarjeta.nombre
         titulo.innerHTML = `La tarjeta elejida es ${eleccion_tarjeta.nombre}, las cuotas disponibles son:`
         crear_lista_de_cuotas(eleccion_tarjeta)
         for (var i = 0; i < lista_de_cuotas.length; i++) {
@@ -182,23 +222,42 @@ BotonPrincipal.onclick = () => {
     }
     else if (contador == 3) {
         eleccion_de_monto = parseInt(selectorDeMonto.value)
-        localStorage.setItem("prestamo", eleccion_de_monto)
+        prestamoAnterior.monto = eleccion_de_monto
         if (isNaN(eleccion_de_monto)) {
-            alert("Introduzca un numero correcto")
+            Swal.fire({
+                title: `¡Error!`,
+                text: `Introduzca un número válido`,
+                icon: `error`,
+                confirmButtonText: `Continuar`
+            })
         }
         else {
             BotonPrincipal.remove()
             selectorDeMonto.remove()
             contenedorPrincipal.remove()
             tasa = eleccion_tarjeta.lista_de_tasas[parseInt(selectorDeCuotas.options[selectorDeCuotas.selectedIndex].value)]
-            localStorage.setItem("tasa", tasa)
+            prestamoAnterior.tasa = tasa
             meses = parseInt(parseInt(eleccion_cuotas))
-            localStorage.setItem("meses", meses)
+            prestamoAnterior.meses = meses
             cuota = (calcular_cuota(eleccion_de_monto, tasa, meses)).toFixed(2)
-            localStorage.setItem("cuota", cuota)
+            prestamoAnterior.cuota = cuota
+            if (localStorage.length == 0) {
+                prestamoAnterior.id = 1
+                let prestamosAnteriores = []
+                prestamosAnteriores.push(prestamoAnterior)
+                console.log(prestamosAnteriores)
+                localStorage.setItem("ListaDePrestamos", JSON.stringify(prestamosAnteriores))
+            }
+            else {
+                let prestamosAnteriores = JSON.parse(localStorage.getItem("ListaDePrestamos"))
+                prestamoAnterior.id = (prestamosAnteriores.length) + 1
+                console.log(prestamosAnteriores)
+                prestamosAnteriores.push(prestamoAnterior)
+                localStorage.setItem("ListaDePrestamos", JSON.stringify(prestamosAnteriores))
+            }
             Swal.fire({
                 title: `¡Gracias por usar el simulador!`,
-                text: `El valor de la cuota seria $${cuota}`,
+                text: `El valor de la cuota seria $${cuota}, el prestamo sera guardado y podra ser visualizado al recargar la pagina.`,
                 icon: `success`,
                 confirmButtonText: `Terminar simulacion`
             })
@@ -206,30 +265,34 @@ BotonPrincipal.onclick = () => {
     }
 }
 
+botonSiguiente.onclick = () => {
+    if (indiceDeListaDeSimulaciones < (simulaciones_anteriores.length)-1) {
+        indiceDeListaDeSimulaciones++
+    }
+    else {
+        indiceDeListaDeSimulaciones = 0
+    }
+    prestamista_anterior.innerHTML = `Tarjeta: ${simulaciones_anteriores[indiceDeListaDeSimulaciones].prestamista}`
+    monto_anterior.innerHTML = `Monto: $${simulaciones_anteriores[indiceDeListaDeSimulaciones].monto}`
+    meses_anterior.innerHTML = `Meses: ${simulaciones_anteriores[indiceDeListaDeSimulaciones].meses}`
+    tasa_anterior.innerHTML = `Tasa: ${simulaciones_anteriores[indiceDeListaDeSimulaciones].tasa}%`
+    cuota_anterior.innerHTML = `Cuota: $${simulaciones_anteriores[indiceDeListaDeSimulaciones].cuota}`
+    DeleteFlip(contenedorSecundario)
+    Flip(contenedorSecundario)
+}
 
-// Uso de LocalStorage y JSON
-
-if (localStorage.length > 0) {
-
-    contenedorSecundario.classList.remove("invisible")
-
-    let guardar_anterior = new Prestamo((localStorage.getItem("prestamista")), localStorage.getItem("prestamo"), localStorage.getItem("meses"), localStorage.getItem("tasa"), localStorage.getItem("cuota"))
-
-    let guardarJson = JSON.stringify(guardar_anterior)
-    localStorage.setItem("ultima_simulacion", guardarJson)
-
-    let ultima_simulacion = JSON.parse(localStorage.getItem("ultima_simulacion"))
-    console.log(ultima_simulacion)
-
-    let prestamista_anterior = document.getElementById("prestamista")
-    let monto_anterior = document.getElementById("monto")
-    let meses_anterior = document.getElementById("meses")
-    let tasa_anterior = document.getElementById("tasa")
-    let cuota_anterior = document.getElementById("cuota")
-
-    prestamista_anterior.innerHTML = `Tarjeta: ${ultima_simulacion.prestamista}`
-    monto_anterior.innerHTML = `Monto: $${ultima_simulacion.monto}`
-    meses_anterior.innerHTML = `Meses: ${ultima_simulacion.meses}`
-    tasa_anterior.innerHTML = `Tasa: ${ultima_simulacion.tasa}%`
-    cuota_anterior.innerHTML = `Cuota: $${ultima_simulacion.cuota}`
+botonAtras.onclick = () => {
+    if (indiceDeListaDeSimulaciones > 0) {
+        indiceDeListaDeSimulaciones--
+    }
+    else {
+        indiceDeListaDeSimulaciones = (simulaciones_anteriores.length)-1
+    }
+    prestamista_anterior.innerHTML = `Tarjeta: ${simulaciones_anteriores[indiceDeListaDeSimulaciones].prestamista}`
+    monto_anterior.innerHTML = `Monto: $${simulaciones_anteriores[indiceDeListaDeSimulaciones].monto}`
+    meses_anterior.innerHTML = `Meses: ${simulaciones_anteriores[indiceDeListaDeSimulaciones].meses}`
+    tasa_anterior.innerHTML = `Tasa: ${simulaciones_anteriores[indiceDeListaDeSimulaciones].tasa}%`
+    cuota_anterior.innerHTML = `Cuota: $${simulaciones_anteriores[indiceDeListaDeSimulaciones].cuota}`
+    DeleteFlip(contenedorSecundario)
+    Flip(contenedorSecundario)
 }
